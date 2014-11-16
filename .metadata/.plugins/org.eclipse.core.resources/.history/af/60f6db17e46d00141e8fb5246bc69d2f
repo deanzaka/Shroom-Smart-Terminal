@@ -61,7 +61,7 @@ public class Main extends IOIOActivity {
 		//dateText(currentDate);
 		//String currentTime = DateFormat.getTimeInstance(3).format(new Date());
 		//timeText(currentTime);
-		startClock();
+		
 		enableUi(false);
 	}
 	
@@ -102,10 +102,10 @@ public class Main extends IOIOActivity {
 			terminal2_.write(switchTerminal2_.isChecked());
 			terminal3_.write(switchTerminal3_.isChecked());
 			
-			//String currentTime = DateFormat.getTimeInstance(3).format(new Date());
-			//timeText(currentTime);
-			//String currentDate = DateFormat.getDateInstance().format(new Date());
-			//dateText(currentDate);
+			String currentTime = DateFormat.getTimeInstance(3).format(new Date());
+			timeText(currentTime);
+			String currentDate = DateFormat.getDateInstance().format(new Date());
+			dateText(currentDate);
 			
 			Thread.sleep(10);
 		}
@@ -133,11 +133,7 @@ public class Main extends IOIOActivity {
 			}
 		});
 	}
-	
-	private void startClock() {
-        mHandler.post(mRunnable);
-    }
-	
+
 	@SuppressLint("DefaultLocale")
 	private void luxText(float f) {
 		final String str = String.format("%.0f", f);
