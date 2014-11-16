@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">	
+
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:paddingTop="5dp">
+		
+		<ToggleButton
+			android:id="@+id/Terminal1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_margin="5dp"
+			android:text="@string/terminal_1"
+			android:textOn="@string/terminal_1"
+			android:textOff="@string/terminal_1"
+			/>
+		
+		<ToggleButton
+			android:id="@+id/Terminal2"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/Terminal1"
+			android:layout_margin="5dp"
+			android:text="@string/terminal_2"
+			android:textOn="@string/terminal_2"
+			android:textOff="@string/terminal_2"
+			/>
+		
+		<ToggleButton
+			android:id="@+id/Terminal3"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/Terminal2"
+			android:layout_margin="5dp"
+			android:text="@string/terminal_3"
+			android:textOn="@string/terminal_3"
+			android:textOff="@string/terminal_3"
+			/>
+		
+		<ToggleButton
+			android:id="@+id/Lamp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/Lamp"
+			android:layout_margin="5dp"
+			android:text="@string/lamp"
+			android:textOn="@string/lamp"
+			android:textOff="@string/lamp"
+			/>
+	</RelativeLayout>
+	
+</LinearLayout>

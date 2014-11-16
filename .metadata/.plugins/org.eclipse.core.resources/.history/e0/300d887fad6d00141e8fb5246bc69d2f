@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shroom - Smart Outlet</string>
+    <string name="terminal_1">Plug 1</string>
+    <string name="terminal_2">Plug 2</string>
+    <string name="terminal_3">Plug 3</string>
+    <string name="lamp">Lamp</string>
+    
+    <string name="light_label">Light intensity: </string>
+    <string name="temp_label">Temperature</string>
+    <string name="cel_label">celcius</string>
+    <string name="lux_label">lux</string>
+    
+    
+    
+</resources>
