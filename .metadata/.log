@@ -876,3 +876,36 @@ Binding(CTRL+SHIFT+ARROW_DOWN,
 
 !ENTRY com.android.ide.eclipse.adt 2 0 2014-11-16 22:02:22.336
 !MESSAGE main.xml: Couldn't resolve resource @string/cel_label
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-11-17 00:14:00.673
+!MESSAGE Failed to load properties file for project 'TestDoang'
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-11-17 01:26:26.021
+!MESSAGE Warning: Ignoring name conflict in resource file for name hello_world
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-11-17 01:26:26.038
+!MESSAGE Warning: Ignoring name conflict in resource file for name action_settings
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-11-17 01:26:26.043
+!MESSAGE Warning: Ignoring name conflict in resource file for name activity_horizontal_margin
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-11-17 01:26:26.044
+!MESSAGE Warning: Ignoring name conflict in resource file for name activity_vertical_margin
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-11-17 01:26:26.049
+!MESSAGE Warning: Ignoring name conflict in resource file for name activity_horizontal_margin
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-11-17 01:26:28.872
+!MESSAGE Warning: Ignoring name conflict in resource file for name hello_world
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-11-17 01:26:28.872
+!MESSAGE Warning: Ignoring name conflict in resource file for name action_settings
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-11-17 01:26:28.902
+!MESSAGE Warning: Ignoring name conflict in resource file for name activity_horizontal_margin
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-11-17 01:26:28.902
+!MESSAGE Warning: Ignoring name conflict in resource file for name activity_vertical_margin
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2014-11-17 01:26:28.914
+!MESSAGE Warning: Ignoring name conflict in resource file for name activity_horizontal_margin

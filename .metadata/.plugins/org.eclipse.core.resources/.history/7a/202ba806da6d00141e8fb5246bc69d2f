@@ -1,0 +1,144 @@
+package shroom.dkib.st;
+
+import ioio.lib.api.AnalogInput;
+import ioio.lib.api.DigitalOutput;
+import ioio.lib.api.IOIO;
+import ioio.lib.api.exception.ConnectionLostException;
+import ioio.lib.util.BaseIOIOLooper;
+import ioio.lib.util.IOIOLooper;
+import ioio.lib.util.android.IOIOActivity;
+import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.widget.TextView;
+import android.widget.ToggleButton;
+
+public class Main extends IOIOActivity {
+	public ToggleButton switchTerminal1_;
+	public ToggleButton switchTerminal2_;
+	public ToggleButton switchTerminal3_;
+	public ToggleButton switchLamp_;
+	public ToggleButton switchAuto_;
+	public TextView luxValue_;
+	public TextView tempValue_;
+	public TextView testTime_;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		
+		switchTerminal1_ = (ToggleButton) findViewById(R.id.Terminal1);
+		switchTerminal2_ = (ToggleButton) findViewById(R.id.Terminal2);
+		switchTerminal3_ = (ToggleButton) findViewById(R.id.Terminal3);
+		switchLamp_ = (ToggleButton) findViewById(R.id.Lamp);
+		switchAuto_ = (ToggleButton) findViewById(R.id.AutoMode);
+		luxValue_ = (TextView) findViewById(R.id.LuxValue);
+		tempValue_ = (TextView) findViewById(R.id.TempValue);
+		testTime_ = (TextView) findViewById(R.id.TestTime);
+		enableUi(false);
+	}
+
+	class Looper extends BaseIOIOLooper {
+		public DigitalOutput led_;
+		public DigitalOutput terminal1_;
+		public DigitalOutput terminal2_;
+		public DigitalOutput terminal3_;
+		public DigitalOutput lamp_;
+		public AnalogInput lux_;
+		public AnalogInput temp_;
+		
+		@Override
+		public void setup() throws ConnectionLostException {
+			led_ = ioio_.openDigitalOutput(IOIO.LED_PIN, true);
+			lamp_ = ioio_.openDigitalOutput(10, true);
+			terminal1_ = ioio_.openDigitalOutput(9, true);
+			terminal2_ = ioio_.openDigitalOutput(8, true);
+			terminal3_ = ioio_.openDigitalOutput(7, true);
+			lux_ = ioio_.openAnalogInput(40);
+			temp_ = ioio_.openAnalogInput(39);
+			enableUi(true);
+		}
+
+		@Override
+		public void loop() throws ConnectionLostException, InterruptedException {
+			float luxRead = lux_.read();
+			luxRead = ((2500/luxRead) - 500);
+			luxText(luxRead);
+			
+			float tempRead = temp_.read();
+			tempRead = tempRead * 290;
+			tempText(tempRead);
+			
+			timeText(9,0);
+			
+			led_.write(!switchLamp_.isChecked());
+			lamp_.write(switchLamp_.isChecked());
+			terminal1_.write(switchTerminal1_.isChecked());
+			terminal2_.write(switchTerminal2_.isChecked());
+			terminal3_.write(switchTerminal3_.isChecked());
+			
+			Thread.sleep(10);
+		}
+
+		@Override
+		public void disconnected() {
+			enableUi(false);
+		}
+	}
+
+	@Override
+	protected IOIOLooper createIOIOLooper() {
+		return new Looper();
+	}
+
+	private void enableUi(final boolean enable) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				switchTerminal1_.setEnabled(enable);
+				switchTerminal2_.setEnabled(enable);
+				switchTerminal3_.setEnabled(enable);
+				switchLamp_.setEnabled(enable);
+				switchAuto_.setEnabled(enable);
+			}
+		});
+	}
+
+	@SuppressLint("DefaultLocale")
+	private void luxText(float f) {
+		final String str = String.format("%.0f", f);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				luxValue_.setText(str);
+			}
+		});
+	}
+	
+	@SuppressLint("DefaultLocale")
+	private void tempText(float f) {
+		final String str = String.format("%.0f", f);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				luxValue_.setText(str);
+			}
+		});
+	}
+	
+	@SuppressLint("DefaultLocale")
+	private void timeText(int h, int m) {
+		String strTmp = null;
+		if(h < 10 && m < 10) {strTmp = String.format("0%d:0%d", h, m);}
+		else if(h < 10 && m >= 10) {strTmp = String.format("0%d:%d", h, m);}
+		else if(h >= 10 && m < 10) {strTmp = String.format("%d:0%d", h, m);}
+		else {strTmp = String.format("%d:%d", h, m);}
+		final String str = strTmp;
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				testTime_.setText(str);
+			}
+		});
+	}
+}

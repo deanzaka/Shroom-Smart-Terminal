@@ -1,0 +1,77 @@
+package shroom.dkib.st;
+
+import ioio.lib.api.AnalogInput;
+import ioio.lib.api.DigitalOutput;
+import ioio.lib.api.IOIO;
+import ioio.lib.api.exception.ConnectionLostException;
+import ioio.lib.util.BaseIOIOLooper;
+import ioio.lib.util.IOIOLooper;
+import ioio.lib.util.android.IOIOActivity;
+import android.os.Bundle;
+import android.widget.TextView;
+import android.widget.ToggleButton;
+
+public class Main extends IOIOActivity {
+	public ToggleButton switchTerminal1_;
+	public ToggleButton switchTerminal2_;
+	public ToggleButton switchTerminal3_;
+	public ToggleButton switchLamp_;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		
+		switchTerminal1_ = (ToggleButton) findViewById(R.id.Terminal1);
+		switchTerminal2_ = (ToggleButton) findViewById(R.id.Terminal2);
+		switchTerminal3_ = (ToggleButton) findViewById(R.id.Terminal3);
+		switchLamp_ = (ToggleButton) findViewById(R.id.Lamp);
+
+		enableUi(false);
+	}
+
+	class Looper extends BaseIOIOLooper {
+		private DigitalOutput led_;
+
+		@Override
+		public void setup() throws ConnectionLostException {
+			led_ = ioio_.openDigitalOutput(IOIO.LED_PIN, true);
+			enableUi(true);
+		}
+
+		@Override
+		public void loop() throws ConnectionLostException, InterruptedException {
+			led_.write(!switchLamp_.isChecked());
+			Thread.sleep(10);
+		}
+
+		@Override
+		public void disconnected() {
+			enableUi(false);
+		}
+	}
+
+	@Override
+	protected IOIOLooper createIOIOLooper() {
+		return new Looper();
+	}
+
+	private void enableUi(final boolean enable) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				switchLamp_.setEnabled(enable);
+			}
+		});
+	}
+
+	private void setNumber(float f) {
+		final String str = String.format("%.2f", f);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				//textView_.setText(str);
+			}
+		});
+	}
+}

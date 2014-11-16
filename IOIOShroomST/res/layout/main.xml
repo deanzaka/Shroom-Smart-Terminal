@@ -12,12 +12,19 @@
 		android:paddingTop="30dp">
 		
         <TextView
-		    android:id="@+id/TestTime"
+		    android:id="@+id/DisplayTime"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:paddingLeft="20dp"
-		    android:text="00:00"
 		    android:textSize="70sp" />
+        
+        <TextView
+		    android:id="@+id/DisplayDate"
+		    android:layout_below="@id/DisplayTime"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:paddingLeft="20dp"
+		    android:textSize="30sp" />
         
 	</RelativeLayout>
     
@@ -26,7 +33,7 @@
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
 		android:gravity="left"
-		android:paddingTop="10dp">
+		android:paddingTop="70dp">
 		
 		<TextView
 		    android:id="@+id/LightLabel"
@@ -92,15 +99,15 @@
 			android:textSize="20sp"
 			/>
 	</RelativeLayout>
-	
+    
 	<RelativeLayout 
 	    android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
 		android:gravity="center_horizontal"
-		android:paddingTop="20dp">
+		android:paddingTop="40dp">
 		
-		<ToggleButton
+	    <ToggleButton
 			android:id="@+id/Terminal1"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -131,7 +138,7 @@
 			android:textOn="@string/terminal_3"
 			android:textOff="@string/terminal_3"
 			/>
-		
+	    
 		<ToggleButton
 			android:id="@+id/Lamp"
 			android:layout_width="wrap_content"
@@ -141,8 +148,7 @@
 			android:text="@string/lamp"
 			android:textOn="@string/lamp"
 			android:textOff="@string/lamp"
-			/>
-		
+			/> 
 	</RelativeLayout>
 	
 	<RelativeLayout 
@@ -164,4 +170,4 @@
 			/>
 	</RelativeLayout>
 	
-</LinearLayout>
+	</LinearLayout>
