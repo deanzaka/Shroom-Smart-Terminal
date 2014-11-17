@@ -1,0 +1,62 @@
+package shroom.dkib.st;
+
+import java.text.DateFormat;
+import java.util.Date;
+
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ToggleButton;
+
+public class Settings extends ActionBarActivity {
+	
+	public ToggleButton LightSensor1_;
+	public ToggleButton TempSensor1_;
+	public ToggleButton Timer1_;
+	public ToggleButton LightSensor2_;
+	public ToggleButton TempSensor2_;
+	public ToggleButton Timer2_;
+	public ToggleButton LightSensor3_;
+	public ToggleButton TempSensor3_;
+	public ToggleButton Timer3_;
+	public ToggleButton LightSensor4_;
+	public ToggleButton TempSensor4_;
+	public ToggleButton Timer4_;
+	private final Handler mHandler;
+	
+	private final Runnable mRunnable = new Runnable() {
+        public void run() {
+        	
+            mHandler.postDelayed(mRunnable, 1000);
+        }
+    };
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.settings);
+		
+		LightSensor1_ = (ToggleButton) findViewById(R.id.LightSens1);
+		TempSensor1_ = (ToggleButton) findViewById(R.id.TempSens1);
+		Timer1_ = (ToggleButton) findViewById(R.id.Timer1);
+		LightSensor2_ = (ToggleButton) findViewById(R.id.LightSens2);
+		TempSensor2_ = (ToggleButton) findViewById(R.id.TempSens2);
+		Timer2_ = (ToggleButton) findViewById(R.id.Timer2);
+		LightSensor3_ = (ToggleButton) findViewById(R.id.LightSens3);
+		TempSensor3_ = (ToggleButton) findViewById(R.id.TempSens3);
+		Timer3_ = (ToggleButton) findViewById(R.id.Timer3);
+		LightSensor4_ = (ToggleButton) findViewById(R.id.LightSens4);
+		TempSensor4_ = (ToggleButton) findViewById(R.id.TempSens4);
+		Timer4_ = (ToggleButton) findViewById(R.id.Timer4);
+		
+		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		start();
+	}
+	
+	private void start() {
+        mHandler.post(mRunnable);
+    }
+}

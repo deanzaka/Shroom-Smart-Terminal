@@ -12,4 +12,8 @@
 			<item value=""/>
 		</list>
 	</section>
+	<section name="ResourceNavigator">
+		<item value="Aggregate for window 1416084384047" key="ResourceWorkingSetFilter.STORE_WORKING_SET"/>
+		<item value="1" key="ResourceViewer.STORE_SORT_TYPE"/>
+	</section>
 </section>

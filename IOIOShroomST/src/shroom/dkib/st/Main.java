@@ -11,12 +11,20 @@ import ioio.lib.util.BaseIOIOLooper;
 import ioio.lib.util.IOIOLooper;
 import ioio.lib.util.android.IOIOActivity;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-public class Main extends IOIOActivity {
+public class Main extends IOIOActivity{
 	public ToggleButton switchTerminal1_;
 	public ToggleButton switchTerminal2_;
 	public ToggleButton switchTerminal3_;
@@ -27,6 +35,8 @@ public class Main extends IOIOActivity {
 	public TextView displayTime_;
 	public TextView displayDate_;
 	private final Handler mHandler;
+	
+	SharedPreferences sharedpreferences;
 	
 	private final Runnable mRunnable = new Runnable() {
         public void run() {
@@ -47,6 +57,8 @@ public class Main extends IOIOActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
+		sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+		
 		switchTerminal1_ = (ToggleButton) findViewById(R.id.Terminal1);
 		switchTerminal2_ = (ToggleButton) findViewById(R.id.Terminal2);
 		switchTerminal3_ = (ToggleButton) findViewById(R.id.Terminal3);
@@ -57,12 +69,33 @@ public class Main extends IOIOActivity {
 		displayTime_ = (TextView) findViewById(R.id.DisplayTime);
 		displayDate_ = (TextView) findViewById(R.id.DisplayDate);
 		
-		//String currentDate = DateFormat.getDateInstance().format(new Date());
-		//dateText(currentDate);
-		//String currentTime = DateFormat.getTimeInstance(3).format(new Date());
-		//timeText(currentTime);
 		startClock();
 		enableUi(false);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_activity, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	        case R.id.action_sensors:
+	        	Intent intentSensors = new Intent(this, Sensors.class);
+	        	startActivity(intentSensors);
+	            return true;
+	        	
+	        case R.id.action_settings:
+	        	Intent intentSettings = new Intent(this, Settings.class);
+	        	startActivity(intentSettings);
+	        	return true;
+	        	
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 	
 	class Looper extends BaseIOIOLooper {
@@ -96,16 +129,62 @@ public class Main extends IOIOActivity {
 			tempRead = tempRead * 290;
 			tempText(tempRead);
 			
-			led_.write(!switchLamp_.isChecked());
-			lamp_.write(switchLamp_.isChecked());
-			terminal1_.write(switchTerminal1_.isChecked());
-			terminal2_.write(switchTerminal2_.isChecked());
-			terminal3_.write(switchTerminal3_.isChecked());
-			
-			//String currentTime = DateFormat.getTimeInstance(3).format(new Date());
-			//timeText(currentTime);
-			//String currentDate = DateFormat.getDateInstance().format(new Date());
-			//dateText(currentDate);
+			if(!switchAuto_.isChecked()) {
+				led_.write(!switchLamp_.isChecked());
+				lamp_.write(switchLamp_.isChecked());
+				terminal1_.write(switchTerminal1_.isChecked());
+				terminal2_.write(switchTerminal2_.isChecked());
+				terminal3_.write(switchTerminal3_.isChecked());
+			}
+			else {
+				if(sharedpreferences.getBoolean("LightSensor1Save", false)) {
+					if(luxRead < 8000) terminal1_.write(switchTerminal1_.isChecked());
+					else terminal1_.write(!switchTerminal1_.isChecked());
+				}
+				if(sharedpreferences.getBoolean("LightSensor2Save", false)) {
+					if(luxRead < 8000) terminal2_.write(switchTerminal2_.isChecked());
+					else terminal2_.write(!switchTerminal2_.isChecked());
+				}
+				if(sharedpreferences.getBoolean("LightSensor3Save", false)) {
+					if(luxRead < 8000) terminal3_.write(switchTerminal3_.isChecked());
+					else terminal3_.write(!switchTerminal3_.isChecked());
+				}
+				if(sharedpreferences.getBoolean("LightSensor4Save", false)) {
+					//if(luxRead < 8000) {
+					//	lamp_.write(switchLamp_.isChecked());
+						led_.write(!switchLamp_.isChecked());
+					//}
+					//else {
+					//	lamp_.write(!switchLamp_.isChecked());
+					//	led_.write(switchLamp_.isChecked());
+					//}
+				}
+				else	led_.write(switchLamp_.isChecked());
+				
+				
+				if(sharedpreferences.getBoolean("TempSensor1Save", false)) {
+					if(tempRead > 30) terminal1_.write(switchTerminal1_.isChecked());
+					else terminal1_.write(!switchTerminal1_.isChecked());
+				}
+				if(sharedpreferences.getBoolean("TempSensor2Save", false)) {
+					if(tempRead > 30) terminal2_.write(switchTerminal2_.isChecked());
+					else terminal2_.write(!switchTerminal2_.isChecked());
+				}
+				if(sharedpreferences.getBoolean("TempSensor3Save", false)) {
+					if(tempRead > 30) terminal3_.write(switchTerminal3_.isChecked());
+					else terminal3_.write(!switchTerminal3_.isChecked());
+				}
+				if(sharedpreferences.getBoolean("TempSensor4Save", false)) {
+					if(tempRead > 30) {
+						lamp_.write(switchLamp_.isChecked());
+						led_.write(!switchLamp_.isChecked());
+					}
+					else {
+						lamp_.write(!switchLamp_.isChecked());
+						led_.write(switchLamp_.isChecked());
+					}
+				}
+			}
 			
 			Thread.sleep(10);
 		}

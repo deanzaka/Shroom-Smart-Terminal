@@ -1,0 +1,111 @@
+package shroom.dkib.st;
+
+import java.text.DateFormat;
+import java.util.Date;
+
+import android.support.v7.app.ActionBarActivity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ToggleButton;
+
+public class Settings extends ActionBarActivity {
+	public String LightSensor1Save;
+	public String TempSensor1Save;
+	public String Timer1Save;
+	public String LightSensor2Save;
+	public String TempSensor2Save;
+	public String Timer2Save;
+	public String LightSensor3Save;
+	public String TempSensor3Save;
+	public String Timer3Save;
+	public String LightSensor4Save;
+	public String TempSensor4Save;
+	public String Timer4Save;
+	public ToggleButton LightSensor1_;
+	public ToggleButton TempSensor1_;
+	public ToggleButton Timer1_;
+	public ToggleButton LightSensor2_;
+	public ToggleButton TempSensor2_;
+	public ToggleButton Timer2_;
+	public ToggleButton LightSensor3_;
+	public ToggleButton TempSensor3_;
+	public ToggleButton Timer3_;
+	public ToggleButton LightSensor4_;
+	public ToggleButton TempSensor4_;
+	public ToggleButton Timer4_;
+	private final Handler mHandler;
+	
+	SharedPreferences sharedpreferences;
+	
+	private final Runnable mRunnable = new Runnable() {
+        public void run() {
+        	
+            mHandler.postDelayed(mRunnable, 10);
+        }
+    };
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.settings);
+		
+		sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+		
+		LightSensor1_ = (ToggleButton) findViewById(R.id.LightSens1);
+		TempSensor1_ = (ToggleButton) findViewById(R.id.TempSens1);
+		Timer1_ = (ToggleButton) findViewById(R.id.Timer1);
+		LightSensor2_ = (ToggleButton) findViewById(R.id.LightSens2);
+		TempSensor2_ = (ToggleButton) findViewById(R.id.TempSens2);
+		Timer2_ = (ToggleButton) findViewById(R.id.Timer2);
+		LightSensor3_ = (ToggleButton) findViewById(R.id.LightSens3);
+		TempSensor3_ = (ToggleButton) findViewById(R.id.TempSens3);
+		Timer3_ = (ToggleButton) findViewById(R.id.Timer3);
+		LightSensor4_ = (ToggleButton) findViewById(R.id.LightSens4);
+		TempSensor4_ = (ToggleButton) findViewById(R.id.TempSens4);
+		Timer4_ = (ToggleButton) findViewById(R.id.Timer4);
+		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		start();
+	}
+	
+	@Override
+	public void onPause() {
+	    super.onPause();  // Always call the superclass method first
+
+	    Editor editor = sharedpreferences.edit();
+        editor.putBoolean(LightSensor1Save, LightSensor1_.isChecked());
+        editor.putBoolean(TempSensor1Save, TempSensor1_.isChecked());
+        editor.putBoolean(Timer1Save, Timer1_.isChecked());
+        editor.putBoolean(LightSensor2Save, LightSensor2_.isChecked());
+        editor.putBoolean(TempSensor2Save, TempSensor2_.isChecked());
+        editor.putBoolean(Timer2Save, Timer2_.isChecked());
+        editor.putBoolean(LightSensor3Save, LightSensor3_.isChecked());
+        editor.putBoolean(TempSensor3Save, TempSensor3_.isChecked());
+        editor.putBoolean(Timer3Save, Timer3_.isChecked());
+        editor.putBoolean(LightSensor4Save, LightSensor4_.isChecked());
+        editor.putBoolean(TempSensor4Save, TempSensor4_.isChecked());
+        editor.putBoolean(Timer4Save, Timer4_.isChecked());
+
+        editor.commit();
+	}
+	
+	@Override
+	public void onResume() {
+	    super.onResume();  // Always call the superclass method first
+	    
+	    
+	}
+	
+	 public Settings() {
+	        mHandler = new Handler();
+	    }
+	
+	private void start() {
+        mHandler.post(mRunnable);
+    }
+}

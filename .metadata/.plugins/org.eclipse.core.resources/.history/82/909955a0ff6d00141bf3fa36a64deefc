@@ -1,0 +1,31 @@
+package shroom.dkib.st;
+
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ToggleButton;
+
+public class Settings extends ActionBarActivity {
+	
+	public ToggleButton LightSensor1_;
+	public ToggleButton TempSensor1_;
+	public ToggleButton Timer1_;
+	public ToggleButton LightSensor2_;
+	public ToggleButton TempSensor2_;
+	public ToggleButton Timer2_;
+	public ToggleButton LightSensor3_;
+	public ToggleButton TempSensor3_;
+	public ToggleButton Timer3_;
+	public ToggleButton LightSensor4_;
+	public ToggleButton TempSensor4_;
+	public ToggleButton Timer4_;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.settings);
+		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+}
