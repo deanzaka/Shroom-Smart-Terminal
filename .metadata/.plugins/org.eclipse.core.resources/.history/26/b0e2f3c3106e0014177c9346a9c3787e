@@ -150,14 +150,14 @@ public class Main extends IOIOActivity{
 					else terminal3_.write(!switchTerminal3_.isChecked());
 				}
 				if(sharedpreferences.getBoolean("LightSensor4Save", false)) {
-					if(luxRead < 8000) {
-						lamp_.write(switchLamp_.isChecked());
+					//if(luxRead < 8000) {
+					//	lamp_.write(switchLamp_.isChecked());
 						led_.write(!switchLamp_.isChecked());
-					}
-					else {
-						lamp_.write(!switchLamp_.isChecked());
-						led_.write(switchLamp_.isChecked());
-					}
+					//}
+					//else {
+					//	lamp_.write(!switchLamp_.isChecked());
+					//	led_.write(switchLamp_.isChecked());
+					//}
 				}
 				else	led_.write(switchLamp_.isChecked());
 				
