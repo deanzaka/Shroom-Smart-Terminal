@@ -1120,8 +1120,9 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f060016;
         public static final int action_menu_presenter=0x7f060017;
         public static final int action_mode_close_button=0x7f060024;
-        public static final int action_sensors=0x7f06005d;
-        public static final int action_settings=0x7f06005e;
+        public static final int action_sensors=0x7f06005e;
+        public static final int action_settings=0x7f06005f;
+        public static final int action_timer=0x7f06005d;
         public static final int activity_chooser_view_content=0x7f060025;
         public static final int always=0x7f06000b;
         public static final int beginning=0x7f060011;
@@ -1232,11 +1233,13 @@ containing a value of this type.
         public static final int sensors=0x7f030019;
         public static final int settings=0x7f03001a;
         public static final int support_simple_spinner_dropdown_item=0x7f03001b;
+        public static final int timer=0x7f03001c;
     }
     public static final class menu {
         public static final int main_activity=0x7f0d0000;
         public static final int sensors=0x7f0d0001;
         public static final int settings=0x7f0d0002;
+        public static final int timer=0x7f0d0003;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -1281,26 +1284,28 @@ containing a value of this type.
         public static final int abc_shareactionprovider_share_with_application=0x7f0b000b;
         public static final int action_sensors=0x7f0b0019;
         public static final int action_settings=0x7f0b001a;
+        public static final int action_timer=0x7f0b001b;
         public static final int app_name=0x7f0b000d;
         public static final int auto_label=0x7f0b0018;
         public static final int cel_label=0x7f0b0016;
-        public static final int hello_world=0x7f0b001e;
+        public static final int hello_world=0x7f0b001f;
         public static final int lamp=0x7f0b0011;
         public static final int light_label=0x7f0b0012;
-        public static final int light_sensor=0x7f0b0020;
+        public static final int light_sensor=0x7f0b0021;
         public static final int light_setup_label=0x7f0b0013;
         public static final int lux_label=0x7f0b0017;
-        public static final int no_answer=0x7f0b001c;
+        public static final int no_answer=0x7f0b001d;
         public static final int temp_label=0x7f0b0014;
-        public static final int temp_sensor=0x7f0b0021;
+        public static final int temp_sensor=0x7f0b0022;
         public static final int temp_setup_label=0x7f0b0015;
         public static final int terminal_1=0x7f0b000e;
         public static final int terminal_2=0x7f0b000f;
         public static final int terminal_3=0x7f0b0010;
-        public static final int timer=0x7f0b0022;
-        public static final int title_activity_sensors=0x7f0b001f;
-        public static final int title_activity_settings=0x7f0b001d;
-        public static final int yes_answer=0x7f0b001b;
+        public static final int timer=0x7f0b0023;
+        public static final int title_activity_sensors=0x7f0b0020;
+        public static final int title_activity_settings=0x7f0b001e;
+        public static final int title_activity_timer=0x7f0b0024;
+        public static final int yes_answer=0x7f0b001c;
     }
     public static final class style {
         /**  Mimic text appearance in select_dialog_item.xml 

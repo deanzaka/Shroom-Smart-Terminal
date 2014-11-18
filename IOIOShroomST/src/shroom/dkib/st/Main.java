@@ -83,7 +83,13 @@ public class Main extends IOIOActivity{
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
-	        case R.id.action_sensors:
+
+	        case R.id.action_timer:
+	        	Intent intentTimer = new Intent(this, Timer.class);
+	        	startActivity(intentTimer);
+	        	return true;
+		    
+	    	case R.id.action_sensors:
 	        	Intent intentSensors = new Intent(this, Sensors.class);
 	        	startActivity(intentSensors);
 	            return true;
@@ -138,19 +144,19 @@ public class Main extends IOIOActivity{
 			}
 			else {
 				if(sharedpreferences.getBoolean("LightSensor1Save", false)) {
-					if(luxRead < 8000) terminal1_.write(switchTerminal1_.isChecked());
+					if(luxRead < sharedpreferences.getInt("userLuxValue", 9000)) terminal1_.write(switchTerminal1_.isChecked());
 					else terminal1_.write(!switchTerminal1_.isChecked());
 				}
 				if(sharedpreferences.getBoolean("LightSensor2Save", false)) {
-					if(luxRead < 8000) terminal2_.write(switchTerminal2_.isChecked());
+					if(luxRead < sharedpreferences.getInt("userLuxValue", 9000)) terminal2_.write(switchTerminal2_.isChecked());
 					else terminal2_.write(!switchTerminal2_.isChecked());
 				}
 				if(sharedpreferences.getBoolean("LightSensor3Save", false)) {
-					if(luxRead < 8000) terminal3_.write(switchTerminal3_.isChecked());
+					if(luxRead < sharedpreferences.getInt("userLuxValue", 9000)) terminal3_.write(switchTerminal3_.isChecked());
 					else terminal3_.write(!switchTerminal3_.isChecked());
 				}
 				if(sharedpreferences.getBoolean("LightSensor4Save", false)) {
-					if(luxRead < 8000) {
+					if(luxRead < sharedpreferences.getInt("userLuxValue", 9000)) {
 						lamp_.write(switchLamp_.isChecked());
 						led_.write(!switchLamp_.isChecked());
 					}
@@ -163,19 +169,19 @@ public class Main extends IOIOActivity{
 				
 				
 				if(sharedpreferences.getBoolean("TempSensor1Save", false)) {
-					if(tempRead > 30) terminal1_.write(switchTerminal1_.isChecked());
+					if(tempRead > sharedpreferences.getInt("userTempValue", 30)) terminal1_.write(switchTerminal1_.isChecked());
 					else terminal1_.write(!switchTerminal1_.isChecked());
 				}
 				if(sharedpreferences.getBoolean("TempSensor2Save", false)) {
-					if(tempRead > 30) terminal2_.write(switchTerminal2_.isChecked());
+					if(tempRead > sharedpreferences.getInt("userTempValue", 30)) terminal2_.write(switchTerminal2_.isChecked());
 					else terminal2_.write(!switchTerminal2_.isChecked());
 				}
 				if(sharedpreferences.getBoolean("TempSensor3Save", false)) {
-					if(tempRead > 30) terminal3_.write(switchTerminal3_.isChecked());
+					if(tempRead > sharedpreferences.getInt("userTempValue", 30)) terminal3_.write(switchTerminal3_.isChecked());
 					else terminal3_.write(!switchTerminal3_.isChecked());
 				}
 				if(sharedpreferences.getBoolean("TempSensor4Save", false)) {
-					if(tempRead > 30) {
+					if(tempRead > sharedpreferences.getInt("userTempValue", 30)) {
 						lamp_.write(switchLamp_.isChecked());
 						led_.write(!switchLamp_.isChecked());
 					}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Shroom - Smart Outlet</string>
+    <string name="terminal_1">Plug 1</string>
+    <string name="terminal_2">Plug 2</string>
+    <string name="terminal_3">Plug 3</string>
+    <string name="lamp">Lamp</string>
+    <string name="light_label">Light intensity: </string>
+    <string name="light_setup_label">Light setup: </string>
+    <string name="temp_label">Temperature: </string>
+    <string name="temp_setup_label">Temperature setup: </string>
+    <string name="cel_label">celcius</string>
+    <string name="lux_label">lux</string>
+    <string name="auto_label">Auto Mode</string>
+    <string name="action_sensors">Sensors</string>
+    <string name="action_settings">Setting</string>
+    <string name="yes_answer">Yes</string>
+    <string name="no_answer">No</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_sensors">Sensors</string>
+    <string name="light_sensor">Light</string>
+    <string name="temp_sensor">Temp</string>
+    <string name="timer">Timer</string>
+
+</resources>

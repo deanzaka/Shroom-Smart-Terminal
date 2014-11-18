@@ -1,6 +1,14 @@
 package shroom.dkib.st;
 
+import shroom.dkib.st.Main.Looper;
+import ioio.lib.api.AnalogInput;
+import ioio.lib.api.IOIO;
+import ioio.lib.api.exception.ConnectionLostException;
+import ioio.lib.util.BaseIOIOLooper;
+import ioio.lib.util.IOIOLooper;
+import ioio.lib.util.android.IOIOActivity;
 import android.support.v7.app.ActionBarActivity;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -11,7 +19,7 @@ import android.view.MenuItem;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
-public class Sensors extends ActionBarActivity {
+public class Sensors extends IOIOActivity {
 	
 	public TextView luxValue_;
 	public TextView tempValue_;
@@ -47,6 +55,9 @@ public class Sensors extends ActionBarActivity {
 		
 		sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 		
+		luxValue_ = (TextView) findViewById(R.id.LuxValue);
+		tempValue_ = (TextView) findViewById(R.id.TempValue);
+		
 		String[] nums = new String[41];
 		for(int i=0; i<nums.length; i++)
 		nums[i] = Integer.toString(i*500);
@@ -66,13 +77,13 @@ public class Sensors extends ActionBarActivity {
         pickerTemp_.setWrapSelectorWheel(false);
         pickerTemp_.setOnLongPressUpdateInterval(50);
         
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         start();
 	}
 	
 	@Override
 	public void onPause() {
-	    super.onPause();  // Always call the superclass method first
+	    super.onPause(); 
 	    Editor editor = sharedpreferences.edit();
 	    editor.putInt("userLuxValue", pickerLux_.getValue());
         editor.putInt("userTempValue", pickerTemp_.getValue());
@@ -100,6 +111,56 @@ public class Sensors extends ActionBarActivity {
         pickerTemp_.setWrapSelectorWheel(false);
         pickerTemp_.setOnLongPressUpdateInterval(50);
         
+	}
+	
+	class Looper extends BaseIOIOLooper {
+		public AnalogInput lux_;
+		public AnalogInput temp_;
+		
+		@Override
+		public void setup() throws ConnectionLostException {
+			lux_ = ioio_.openAnalogInput(40);
+			temp_ = ioio_.openAnalogInput(39);
+		}
+		
+		@Override
+		public void loop() throws ConnectionLostException, InterruptedException {
+			float luxRead = lux_.read();
+			luxRead = ((2500/luxRead) - 500);
+			luxText(luxRead);
+			
+			float tempRead = temp_.read();
+			tempRead = tempRead * 290;
+			tempText(tempRead);
+		}
+		
+	}
+	
+	@Override
+	protected IOIOLooper createIOIOLooper() {
+		return new Looper();
+	}
+	
+	@SuppressLint("DefaultLocale")
+	private void luxText(float f) {
+		final String str = String.format("%.0f", f);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				luxValue_.setText(str);
+			}
+		});
+	}
+	
+	@SuppressLint("DefaultLocale")
+	private void tempText(float f) {
+		final String str = String.format("%.0f", f);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				tempValue_.setText(str);
+			}
+		});
 	}
 
 }
