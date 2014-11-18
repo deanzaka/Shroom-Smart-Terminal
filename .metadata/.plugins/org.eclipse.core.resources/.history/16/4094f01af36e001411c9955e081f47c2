@@ -1,0 +1,45 @@
+package shroom.dkib.st;
+
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.NumberPicker;
+import android.widget.TextView;
+
+public class Sensors extends ActionBarActivity {
+	
+	public TextView luxValue_;
+	public TextView tempValue_;
+	public NumberPicker pickerLux_;
+	public NumberPicker pickerTemp_;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.sensors);
+		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		String[] nums = new String[41];
+		for(int i=0; i<nums.length; i++)
+		nums[i] = Integer.toString(i*500);
+		pickerLux_ = (NumberPicker) findViewById(R.id.userLux);
+		pickerLux_.setMaxValue(nums.length - 1);
+        pickerLux_.setMinValue(0);
+        pickerLux_.setDisplayedValues(nums);
+        for( int i=0; i<nums.length ; i++ )
+            if(nums[i].equals("9000"))
+                 pickerLux_.setValue(i);
+        pickerLux_.setWrapSelectorWheel(false);
+        pickerLux_.setOnLongPressUpdateInterval(50);
+        pickerTemp_ = (NumberPicker) findViewById(R.id.userTemp);
+        pickerTemp_.setMaxValue(100);
+        pickerTemp_.setMinValue(0);
+        pickerTemp_.setValue(30);
+        pickerTemp_.setWrapSelectorWheel(false);
+        pickerTemp_.setOnLongPressUpdateInterval(50);
+	}
+
+
+}

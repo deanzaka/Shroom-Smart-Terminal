@@ -7,14 +7,14 @@
     <string name="terminal_3">Plug 3</string>
     <string name="lamp">Lamp</string>
     <string name="light_label">Light intensity: </string>
-    <string name="temp_label">Temperature</string>
+    <string name="light_setup_label">Light setup: </string>
+    <string name="temp_label">Temperature: </string>
+    <string name="temp_setup_label">Temperature setup: </string>
     <string name="cel_label">celcius</string>
     <string name="lux_label">lux</string>
     <string name="auto_label">Auto Mode</string>
     <string name="action_sensors">Sensors</string>
     <string name="action_settings">Setting</string>
-    <string name="setting_alert">Go to setting?</string>
-    <string name="sensors_alert">Setup sensors?</string>
     <string name="yes_answer">Yes</string>
     <string name="no_answer">No</string>
     <string name="title_activity_settings">Settings</string>

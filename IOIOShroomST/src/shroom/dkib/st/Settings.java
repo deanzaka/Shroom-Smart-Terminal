@@ -135,9 +135,9 @@ public class Settings extends ActionBarActivity {
 
 	}
 	
-	 public Settings() {
+	public Settings() {
 	        mHandler = new Handler();
-	    }
+	}
 	
 	private void start() {
         mHandler.post(mRunnable);

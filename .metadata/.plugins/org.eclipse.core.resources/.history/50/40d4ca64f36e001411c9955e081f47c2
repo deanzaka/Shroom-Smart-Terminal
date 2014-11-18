@@ -1,0 +1,73 @@
+package shroom.dkib.st;
+
+import android.support.v7.app.ActionBarActivity;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.NumberPicker;
+import android.widget.TextView;
+
+public class Sensors extends ActionBarActivity {
+	
+	public TextView luxValue_;
+	public TextView tempValue_;
+	public NumberPicker pickerLux_;
+	public NumberPicker pickerTemp_;
+	
+	private final Handler mHandler;
+	SharedPreferences sharedpreferences;
+	
+	private final Runnable mRunnable = new Runnable() {
+        public void run() {
+
+    	    Editor editor = sharedpreferences.edit();
+            editor.putBoolean("LightSensor1Save", LightSensor1_.isChecked());
+            editor.putBoolean("TempSensor1Save", TempSensor1_.isChecked());
+            editor.putBoolean("Timer1Save", Timer1_.isChecked());
+            editor.putBoolean("LightSensor2Save", LightSensor2_.isChecked());
+            editor.putBoolean("TempSensor2Save", TempSensor2_.isChecked());
+            editor.putBoolean("Timer2Save", Timer2_.isChecked());
+            editor.putBoolean("LightSensor3Save", LightSensor3_.isChecked());
+            editor.putBoolean("TempSensor3Save", TempSensor3_.isChecked());
+            editor.putBoolean("Timer3Save", Timer3_.isChecked());
+            editor.putBoolean("LightSensor4Save", LightSensor4_.isChecked());
+            editor.putBoolean("TempSensor4Save", TempSensor4_.isChecked());
+            editor.putBoolean("Timer4Save", Timer4_.isChecked());
+
+            editor.commit();
+            
+        }
+    };
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.sensors);
+		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		String[] nums = new String[41];
+		for(int i=0; i<nums.length; i++)
+		nums[i] = Integer.toString(i*500);
+		pickerLux_ = (NumberPicker) findViewById(R.id.userLux);
+		pickerLux_.setMaxValue(nums.length - 1);
+        pickerLux_.setMinValue(0);
+        pickerLux_.setDisplayedValues(nums);
+        for( int i=0; i<nums.length ; i++ )
+            if(nums[i].equals("9000"))
+                 pickerLux_.setValue(i);
+        pickerLux_.setWrapSelectorWheel(false);
+        pickerLux_.setOnLongPressUpdateInterval(50);
+        pickerTemp_ = (NumberPicker) findViewById(R.id.userTemp);
+        pickerTemp_.setMaxValue(100);
+        pickerTemp_.setMinValue(0);
+        pickerTemp_.setValue(30);
+        pickerTemp_.setWrapSelectorWheel(false);
+        pickerTemp_.setOnLongPressUpdateInterval(50);
+	}
+
+
+}

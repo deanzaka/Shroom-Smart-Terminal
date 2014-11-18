@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">	
+	
+    <TextView
+	    android:id="@+id/LightSetupLabel"
+	    android:text="@string/light_setup_label"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:paddingTop="20dp"
+	    android:paddingLeft="20dp"
+	    android:textSize="20sp" />
+   
+	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="left"
+	    android:paddingTop="10dp"
+	    android:paddingLeft="20dp">
+	    
+	    <NumberPicker
+		    android:id="@+id/userLux"
+		    android:layout_width="100dp"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"/>		
+	    
+	</RelativeLayout>
+	
+	<TextView
+	    android:id="@+id/TempSetupLabel"
+	    android:text="@string/temp_setup_label"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:paddingTop="20dp"
+	    android:paddingLeft="20dp"
+	    android:textSize="20sp" />
+   
+	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="left"
+	    android:paddingTop="10dp"
+	    android:paddingLeft="20dp">
+	    
+	    <NumberPicker
+		    android:id="@+id/userTemp"
+		    android:layout_width="100dp"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"/>
+	    
+	        
+        <TextView
+		    android:id="@+id/LightLabel"
+			android:text="@string/light_label"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingLeft="20dp"
+			android:paddingRight="30dp"
+			android:layout_toRightOf="@id/userTemp"
+			android:textSize="20sp"
+			/>
+
+		<TextView
+		    android:id="@+id/LuxValue"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_toRightOf="@id/LightLabel"
+		    android:paddingRight="20dp"
+			android:layout_toRightOf="@id/userTemp"
+		    android:text="0"
+		    android:textSize="20sp" />		
+	    
+	</RelativeLayout>
+	
+
+</LinearLayout>
