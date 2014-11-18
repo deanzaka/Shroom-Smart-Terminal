@@ -1,16 +1,53 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="shroom.dkib.st.Timer" >
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">	
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:text="@string/timer_setup_label"
+        android:textSize="20sp" 
+        android:paddingTop="40dp"
+        android:paddingLeft="20dp"/>
+    
+    <RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_horizontal"
+	    android:paddingTop="10dp">
+	    
+	    <NumberPicker
+		    android:id="@+id/userHour"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_marginRight="20dp" />
+		
+	    <NumberPicker
+		    android:id="@+id/userMin"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_toRightOf="@id/userHour"
+		    android:layout_marginRight="20dp"/>
+	    
+	    <NumberPicker
+		    android:id="@+id/userSec"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_toRightOf="@id/userMin"/>
+	    	
+	</RelativeLayout>
+	
+    <ToggleButton
+			android:id="@+id/StartTimer"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_margin="20dp"
+			android:text="@string/timer"
+			android:textOn="Stop Timer"
+			android:textOff="Start Timer"
+			android:layout_gravity="right"
+			/>
 
-</RelativeLayout>
+</LinearLayout>

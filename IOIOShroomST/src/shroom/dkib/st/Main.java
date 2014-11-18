@@ -44,6 +44,8 @@ public class Main extends IOIOActivity{
     		dateText(currentDate);
     		String currentTime = DateFormat.getTimeInstance(3).format(new Date());
     		timeText(currentTime);
+    		
+    		
             mHandler.postDelayed(mRunnable, 1000);
         }
     };

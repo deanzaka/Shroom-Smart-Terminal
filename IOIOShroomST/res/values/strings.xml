@@ -10,6 +10,7 @@
     <string name="light_setup_label">Light setup: </string>
     <string name="temp_label">Temperature: </string>
     <string name="temp_setup_label">Temperature setup: </string>
+    <string name="timer_setup_label">Setup Timer: </string>
     <string name="cel_label">celcius</string>
     <string name="lux_label">lux</string>
     <string name="auto_label">Auto Mode</string>

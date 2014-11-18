@@ -1,0 +1,70 @@
+package shroom.dkib.st;
+
+import android.support.v7.app.ActionBarActivity;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.NumberPicker;
+
+public class Timer extends ActionBarActivity {
+	
+	public NumberPicker pickerHour_;
+	public NumberPicker pickerMin_;
+	public NumberPicker pickerSec_;
+	
+	private final Handler mHandler;
+	SharedPreferences sharedpreferences;
+	
+	private void start() {
+        mHandler.post(mRunnable);
+    }
+	
+	public Timer() {
+        mHandler = new Handler();
+	}
+	
+	private final Runnable mRunnable = new Runnable() {
+        public void run() {
+
+    	    Editor editor = sharedpreferences.edit();
+            editor.putInt("userHourValue", pickerHour_.getValue());
+            editor.putInt("userMinValue", pickerMin_.getValue());
+            editor.putInt("userSecValue", pickerSec_.getValue());
+            editor.commit();
+            
+            pickerHour_.setValue(pickerHour_.getValue()-1);
+            mHandler.postDelayed(mRunnable, 1000);
+            
+        }
+    };
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.timer);
+		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		pickerHour_ = (NumberPicker) findViewById(R.id.userHour);
+	    pickerMin_ = (NumberPicker) findViewById(R.id.userMin);
+	    pickerSec_ = (NumberPicker) findViewById(R.id.userSec);
+	    
+		pickerHour_.setMaxValue(99);
+	    pickerHour_.setMinValue(0);
+	    pickerHour_.setValue(0);
+	    
+	    pickerMin_.setMaxValue(60);
+	    pickerMin_.setMinValue(0);
+	    pickerMin_.setValue(0);
+	    
+	    pickerSec_.setMaxValue(60);
+	    pickerSec_.setMinValue(0);
+	    pickerSec_.setValue(0);
+		
+	    start();
+	}
+
+}

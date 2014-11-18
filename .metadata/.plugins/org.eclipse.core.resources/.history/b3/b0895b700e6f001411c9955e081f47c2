@@ -1,0 +1,36 @@
+package shroom.dkib.st;
+
+import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.NumberPicker;
+
+public class Timer extends ActionBarActivity {
+	
+	public NumberPicker pickerHour_;
+	public NumberPicker pickerMin_;
+	public NumberPicker pickerSec_;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.timer);
+		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		pickerHour_.setMaxValue(99);
+	    pickerHour_.setMinValue(0);
+	    pickerHour_.setValue(0);
+	    
+	    pickerMin_.setMaxValue(60);
+	    pickerMin_.setMinValue(0);
+	    pickerMin_.setValue(0);
+	    
+	    pickerSec_.setMaxValue(60);
+	    pickerSec_.setMinValue(0);
+	    pickerSec_.setValue(0);
+		
+	}
+
+}
