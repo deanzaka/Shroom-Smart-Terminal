@@ -1145,7 +1145,7 @@ containing a value of this type.
         public static final int lightLabel=0x7f06004b;
         public static final int listMode=0x7f060001;
         public static final int list_item=0x7f060029;
-        public static final int luxValue=0x7f06004c;
+        public static final int luxValueSensors=0x7f06004c;
         public static final int middle=0x7f060012;
         public static final int never=0x7f060009;
         public static final int none=0x7f060010;
@@ -1171,7 +1171,7 @@ containing a value of this type.
         public static final int submit_area=0x7f060039;
         public static final int tabMode=0x7f060002;
         public static final int tempLabel=0x7f06004f;
-        public static final int tempValue=0x7f060050;
+        public static final int tempValueSensors=0x7f060050;
         public static final int title=0x7f06002b;
         public static final int top_action_bar=0x7f060020;
         public static final int up=0x7f060021;

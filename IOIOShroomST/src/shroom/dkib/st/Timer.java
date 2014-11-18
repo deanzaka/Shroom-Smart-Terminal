@@ -1,5 +1,13 @@
 package shroom.dkib.st;
 
+import shroom.dkib.st.Main.Looper;
+import ioio.lib.api.AnalogInput;
+import ioio.lib.api.DigitalOutput;
+import ioio.lib.api.IOIO;
+import ioio.lib.api.exception.ConnectionLostException;
+import ioio.lib.util.BaseIOIOLooper;
+import ioio.lib.util.IOIOLooper;
+import ioio.lib.util.android.IOIOActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,7 +19,7 @@ import android.view.MenuItem;
 import android.widget.NumberPicker;
 import android.widget.ToggleButton;
 
-public class Timer extends ActionBarActivity {
+public class Timer extends IOIOActivity {
 	
 	public NumberPicker pickerHour_;
 	public NumberPicker pickerMin_;
@@ -63,7 +71,7 @@ public class Timer extends ActionBarActivity {
 		setContentView(R.layout.timer);
 		
 		sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		StartTimer_ = (ToggleButton) findViewById(R.id.StartTimer);
 		
@@ -86,6 +94,41 @@ public class Timer extends ActionBarActivity {
 	    if(sharedpreferences.getBoolean("StartTimerSave", false) != StartTimer_.isChecked()) StartTimer_.performClick();
 		
 	    start();
+	}
+	
+	class Looper extends BaseIOIOLooper {
+		public DigitalOutput led_;
+		public DigitalOutput terminal1_;
+		public DigitalOutput terminal2_;
+		public DigitalOutput terminal3_;
+		public DigitalOutput lamp_;
+		
+		@Override
+		public void setup() throws ConnectionLostException {
+			led_ = ioio_.openDigitalOutput(IOIO.LED_PIN, true);
+			lamp_ = ioio_.openDigitalOutput(10, true);
+			terminal1_ = ioio_.openDigitalOutput(9, true);
+			terminal2_ = ioio_.openDigitalOutput(8, true);
+			terminal3_ = ioio_.openDigitalOutput(7, true);
+			
+		}
+		
+		@Override
+		public void loop() throws ConnectionLostException, InterruptedException {
+			led_.write(sharedpreferences.getBoolean("led_", true));
+			lamp_.write(sharedpreferences.getBoolean("lamp_", true));
+			terminal1_.write(sharedpreferences.getBoolean("terminal1_", true));
+			terminal2_.write(sharedpreferences.getBoolean("terminal2_", true));
+			terminal3_.write(sharedpreferences.getBoolean("terminal3_", true));
+			
+			Thread.sleep(10);
+		}
+		
+	}
+	
+	@Override
+	protected IOIOLooper createIOIOLooper() {
+		return new Looper();
 	}
 
 }

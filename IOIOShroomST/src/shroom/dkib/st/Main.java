@@ -11,11 +11,10 @@ import ioio.lib.util.BaseIOIOLooper;
 import ioio.lib.util.IOIOLooper;
 import ioio.lib.util.android.IOIOActivity;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -45,7 +44,26 @@ public class Main extends IOIOActivity{
     		String currentTime = DateFormat.getTimeInstance(3).format(new Date());
     		timeText(currentTime);
     		
+    		Editor editor = sharedpreferences.edit();
+    		if(!(sharedpreferences.getInt("userHourValue", 0) == 0 && sharedpreferences.getInt("userMinValue", 0) == 0 && sharedpreferences.getInt("userSecValue", 0) == 0)) {
+        		if(sharedpreferences.getBoolean("StartTimerSave", false)) {
+        			editor.putInt("userSecValue", sharedpreferences.getInt("userSecValue", 0)-1);
+	            	if(sharedpreferences.getInt("userHourValue", 0) == 0 && sharedpreferences.getInt("userMinValue", 0) == 0 && sharedpreferences.getInt("userSecValue", 0) == 0) {
+	            		editor.putBoolean("StartTimerSave", false);
+	                }
+	            	else if(sharedpreferences.getInt("userSecValue", 0) == 59) {
+	            		editor.putInt("userMinValue", sharedpreferences.getInt("userMinValue", 0)-1);
+	            		if(sharedpreferences.getInt("userMinValue", 0) == 59) {
+	            			editor.putInt("userMinValue", sharedpreferences.getInt("userMinValue", 0)-1);
+	                	}
+	            	}
+	            }
+        	}
     		
+    		
+    		
+            editor.commit();
+            
             mHandler.postDelayed(mRunnable, 1000);
         }
     };
@@ -192,8 +210,46 @@ public class Main extends IOIOActivity{
 						led_.write(switchLamp_.isChecked());
 					}
 				}
+				
+				if(sharedpreferences.getBoolean("Timer1Save", false)) {
+					if(sharedpreferences.getInt("userHourValue", 0) == 0 && sharedpreferences.getInt("userMinValue", 0) == 0 && sharedpreferences.getInt("userSecValue", 0) == 0) {
+						terminal1_.write(switchTerminal1_.isChecked());
+					}
+					else terminal1_.write(!switchTerminal1_.isChecked());
+				}
+				if(sharedpreferences.getBoolean("Timer2Save", false)) {
+					if(sharedpreferences.getInt("userHourValue", 0) == 0 && sharedpreferences.getInt("userMinValue", 0) == 0 && sharedpreferences.getInt("userSecValue", 0) == 0) {
+						terminal2_.write(switchTerminal2_.isChecked());
+					}
+					else terminal2_.write(!switchTerminal2_.isChecked());
+				}
+				if(sharedpreferences.getBoolean("Timer3Save", false)) {
+					if(sharedpreferences.getInt("userHourValue", 0) == 0 && sharedpreferences.getInt("userMinValue", 0) == 0 && sharedpreferences.getInt("userSecValue", 0) == 0) {
+						terminal3_.write(switchTerminal3_.isChecked());
+					}
+					else terminal3_.write(!switchTerminal3_.isChecked());
+				}
+				if(sharedpreferences.getBoolean("Timer4Save", false)) {
+					if(sharedpreferences.getInt("userHourValue", 0) == 0 && sharedpreferences.getInt("userMinValue", 0) == 0 && sharedpreferences.getInt("userSecValue", 0) == 0) {
+						lamp_.write(!switchLamp_.isChecked());
+						led_.write(switchLamp_.isChecked());
+					}
+					else {
+						lamp_.write(switchLamp_.isChecked());
+						led_.write(!switchLamp_.isChecked());
+					}
+				}
+				
+				
 			}
 			
+			Editor editor = sharedpreferences.edit();
+			editor.putBoolean("led_", !switchLamp_.isChecked());
+			editor.putBoolean("led_", switchLamp_.isChecked());
+			editor.putBoolean("led_", switchTerminal1_.isChecked());
+			editor.putBoolean("led_", switchTerminal2_.isChecked());
+			editor.putBoolean("led_", switchTerminal3_.isChecked());
+			editor.commit();
 			Thread.sleep(10);
 		}
 

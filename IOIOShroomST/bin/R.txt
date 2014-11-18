@@ -300,7 +300,7 @@ int id image 0x7f060027
 int id lightLabel 0x7f06004b
 int id listMode 0x7f060001
 int id list_item 0x7f060029
-int id luxValue 0x7f06004c
+int id luxValueSensors 0x7f06004c
 int id middle 0x7f060012
 int id never 0x7f060009
 int id none 0x7f060010
@@ -326,7 +326,7 @@ int id split_action_bar 0x7f06001e
 int id submit_area 0x7f060039
 int id tabMode 0x7f060002
 int id tempLabel 0x7f06004f
-int id tempValue 0x7f060050
+int id tempValueSensors 0x7f060050
 int id title 0x7f06002b
 int id top_action_bar 0x7f060020
 int id up 0x7f060021

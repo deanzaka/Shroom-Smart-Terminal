@@ -1,0 +1,196 @@
+package shroom.dkib.st;
+
+import shroom.dkib.st.Main.Looper;
+import ioio.lib.api.AnalogInput;
+import ioio.lib.api.IOIO;
+import ioio.lib.api.exception.ConnectionLostException;
+import ioio.lib.util.BaseIOIOLooper;
+import ioio.lib.util.IOIOLooper;
+import ioio.lib.util.android.IOIOActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.NumberPicker;
+import android.widget.TextView;
+
+public class Sensors extends IOIOActivity {
+	
+	public TextView luxValue_;
+	public TextView tempValue_;
+	public NumberPicker pickerLux_;
+	public NumberPicker pickerTemp_;
+	
+	private final Handler mHandler;
+	private final Handler timeHandler;
+	
+	SharedPreferences sharedpreferences;
+	
+	private void start() {
+        mHandler.post(mRunnable);
+        timeHandler.post(timeRunnable);
+    }
+	
+	public Sensors() {
+        mHandler = new Handler();
+        timeHandler = new Handler();
+	}
+	
+	private final Runnable mRunnable = new Runnable() {
+        public void run() {
+
+    	    Editor editor = sharedpreferences.edit();
+            editor.putInt("userLuxValue", pickerLux_.getValue());
+            editor.putInt("userTempValue", pickerTemp_.getValue());
+            editor.commit();
+            
+        }
+    };
+    
+    private final Runnable timeRunnable = new Runnable() {
+        public void run() {
+    		
+    		Editor editor = sharedpreferences.edit();
+    		if(!(sharedpreferences.getInt("userHourValue", 0) == 0 && sharedpreferences.getInt("userMinValue", 0) == 0 && sharedpreferences.getInt("userSecValue", 0) == 0)) {
+        		if(sharedpreferences.getBoolean("StartTimerSave", false)) {
+        			editor.putInt("userSecValue", sharedpreferences.getInt("userSecValue", 0)-1);
+	            	if(sharedpreferences.getInt("userHourValue", 0) == 0 && sharedpreferences.getInt("userMinValue", 0) == 0 && sharedpreferences.getInt("userSecValue", 0) == 0) {
+	            		editor.putBoolean("StartTimerSave", false);
+	                }
+	            	else if(sharedpreferences.getInt("userSecValue", 0) == 59) {
+	            		editor.putInt("userMinValue", sharedpreferences.getInt("userMinValue", 0)-1);
+	            		if(sharedpreferences.getInt("userMinValue", 0) == 59) {
+	            			editor.putInt("userMinValue", sharedpreferences.getInt("userMinValue", 0)-1);
+	                	}
+	            	}
+	            }
+        	}
+    		
+    		
+            editor.commit();
+            
+            mHandler.postDelayed(mRunnable, 1000);
+        }
+    };
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.sensors);
+		
+		sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+		
+		luxValue_ = (TextView) findViewById(R.id.luxValueSensors);
+		tempValue_ = (TextView) findViewById(R.id.tempValueSensors);
+		
+		String[] nums = new String[41];
+		for(int i=0; i<nums.length; i++)
+		nums[i] = Integer.toString(i*500);
+		pickerLux_ = (NumberPicker) findViewById(R.id.userLux);
+		pickerLux_.setMaxValue(nums.length - 1);
+        pickerLux_.setMinValue(0);
+        pickerLux_.setDisplayedValues(nums);
+        for( int i=0; i<nums.length ; i++ )
+            if(nums[i].equals("9000"))
+                 pickerLux_.setValue(sharedpreferences.getInt("userLuxValue", i));
+        pickerLux_.setWrapSelectorWheel(false);
+        pickerLux_.setOnLongPressUpdateInterval(50);
+        pickerTemp_ = (NumberPicker) findViewById(R.id.userTemp);
+        pickerTemp_.setMaxValue(100);
+        pickerTemp_.setMinValue(0);
+        pickerTemp_.setValue(sharedpreferences.getInt("userTempValue", 30));
+        pickerTemp_.setWrapSelectorWheel(false);
+        pickerTemp_.setOnLongPressUpdateInterval(50);
+        
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        start();
+	}
+	
+	@Override
+	public void onPause() {
+	    super.onPause(); 
+	    Editor editor = sharedpreferences.edit();
+	    editor.putInt("userLuxValue", pickerLux_.getValue());
+        editor.putInt("userTempValue", pickerTemp_.getValue());
+        editor.commit();
+	}
+	
+	public void onResume() {
+		super.onResume();
+		String[] nums = new String[41];
+		for(int i=0; i<nums.length; i++)
+		nums[i] = Integer.toString(i*500);
+		pickerLux_ = (NumberPicker) findViewById(R.id.userLux);
+		pickerLux_.setMaxValue(nums.length - 1);
+        pickerLux_.setMinValue(0);
+        pickerLux_.setDisplayedValues(nums);
+        for( int i=0; i<nums.length ; i++ )
+            if(nums[i].equals("9000"))
+                 pickerLux_.setValue(sharedpreferences.getInt("userLuxValue", i));
+        pickerLux_.setWrapSelectorWheel(false);
+        pickerLux_.setOnLongPressUpdateInterval(50);
+        pickerTemp_ = (NumberPicker) findViewById(R.id.userTemp);
+        pickerTemp_.setMaxValue(100);
+        pickerTemp_.setMinValue(0);
+        pickerTemp_.setValue(sharedpreferences.getInt("userTempValue", 30));
+        pickerTemp_.setWrapSelectorWheel(false);
+        pickerTemp_.setOnLongPressUpdateInterval(50);
+        
+	}
+	
+	class Looper extends BaseIOIOLooper {
+		public AnalogInput lux_;
+		public AnalogInput temp_;
+		
+		@Override
+		public void setup() throws ConnectionLostException {
+			lux_ = ioio_.openAnalogInput(40);
+			temp_ = ioio_.openAnalogInput(39);
+		}
+		
+		@Override
+		public void loop() throws ConnectionLostException, InterruptedException {
+			float luxRead = lux_.read();
+			luxRead = ((2500/luxRead) - 500);
+			luxText(luxRead);
+			
+			float tempRead = temp_.read();
+			tempRead = tempRead * 290;
+			tempText(tempRead);
+		}
+		
+	}
+	
+	@Override
+	protected IOIOLooper createIOIOLooper() {
+		return new Looper();
+	}
+	
+	@SuppressLint("DefaultLocale")
+	private void luxText(float f) {
+		final String str = String.format("%.0f", f);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				luxValue_.setText(str);
+			}
+		});
+	}
+	
+	@SuppressLint("DefaultLocale")
+	private void tempText(float f) {
+		final String str = String.format("%.0f", f);
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				tempValue_.setText(str);
+			}
+		});
+	}
+
+}

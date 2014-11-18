@@ -1,0 +1,125 @@
+package shroom.dkib.st;
+
+import ioio.lib.api.AnalogInput;
+import ioio.lib.api.DigitalOutput;
+import ioio.lib.api.IOIO;
+import ioio.lib.api.exception.ConnectionLostException;
+import ioio.lib.util.BaseIOIOLooper;
+import ioio.lib.util.android.IOIOActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.NumberPicker;
+import android.widget.ToggleButton;
+
+public class Timer extends IOIOActivity {
+	
+	public NumberPicker pickerHour_;
+	public NumberPicker pickerMin_;
+	public NumberPicker pickerSec_;
+	public ToggleButton StartTimer_;
+	
+	private final Handler timeHandler;
+	SharedPreferences sharedpreferences;
+	
+	private void start() {
+        timeHandler.post(timeRunnable);
+    }
+	
+	public Timer() {
+        timeHandler = new Handler();
+	}
+	
+	private final Runnable timeRunnable = new Runnable() {
+        public void run() {            
+        	if(!(pickerSec_.getValue() == 0 && pickerMin_.getValue() == 0 && pickerHour_.getValue() == 0)) {
+        		if(StartTimer_.isChecked()) {
+	            	pickerSec_.setValue(pickerSec_.getValue()-1);
+	            	if(pickerSec_.getValue() == 0 && pickerMin_.getValue() == 0 && pickerHour_.getValue() == 0) {
+	                	StartTimer_.performClick();
+	                }
+	            	else if(pickerSec_.getValue() == 59) {
+	            		pickerMin_.setValue(pickerMin_.getValue()-1);
+	            		if(pickerMin_.getValue() == 59) {
+	                		pickerHour_.setValue(pickerHour_.getValue()-1);
+	                	}
+	            	}
+	            }
+        	}
+            Editor editor = sharedpreferences.edit();
+    	    editor.putBoolean("StartTimerSave", StartTimer_.isChecked());
+            editor.putInt("userHourValue", pickerHour_.getValue());
+            editor.putInt("userMinValue", pickerMin_.getValue());
+            editor.putInt("userSecValue", pickerSec_.getValue());
+            editor.commit();
+            
+            timeHandler.postDelayed(timeRunnable, 1000);
+            
+        }
+    };
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.timer);
+		
+		sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		StartTimer_ = (ToggleButton) findViewById(R.id.StartTimer);
+		
+		pickerHour_ = (NumberPicker) findViewById(R.id.userHour);
+	    pickerMin_ = (NumberPicker) findViewById(R.id.userMin);
+	    pickerSec_ = (NumberPicker) findViewById(R.id.userSec);
+	    
+		pickerHour_.setMaxValue(99);
+	    pickerHour_.setMinValue(0);
+	    pickerHour_.setValue(sharedpreferences.getInt("userHourValue", 0));
+	    
+	    pickerMin_.setMaxValue(59);
+	    pickerMin_.setMinValue(0);
+	    pickerMin_.setValue(sharedpreferences.getInt("userMinValue", 0));
+	    
+	    pickerSec_.setMaxValue(59);
+	    pickerSec_.setMinValue(0);
+	    pickerSec_.setValue(sharedpreferences.getInt("userSecValue", 0));
+	    
+	    if(sharedpreferences.getBoolean("StartTimerSave", false) != StartTimer_.isChecked()) StartTimer_.performClick();
+		
+	    start();
+	}
+	
+	class Looper extends BaseIOIOLooper {
+		public DigitalOutput led_;
+		public DigitalOutput terminal1_;
+		public DigitalOutput terminal2_;
+		public DigitalOutput terminal3_;
+		public DigitalOutput lamp_;
+		public AnalogInput lux_;
+		public AnalogInput temp_;
+		
+		@Override
+		public void setup() throws ConnectionLostException {
+			led_ = ioio_.openDigitalOutput(IOIO.LED_PIN, true);
+			lamp_ = ioio_.openDigitalOutput(10, true);
+			terminal1_ = ioio_.openDigitalOutput(9, true);
+			terminal2_ = ioio_.openDigitalOutput(8, true);
+			terminal3_ = ioio_.openDigitalOutput(7, true);
+			lux_ = ioio_.openAnalogInput(40);
+			temp_ = ioio_.openAnalogInput(39);
+			
+		}
+		
+		@Override
+		public void loop() throws ConnectionLostException, InterruptedException {
+			led_.write(sharedpreferences.getBoolean("led_", true));
+			sharedpreferences.getBoolean("lamp_", true);
+		}
+	}
+
+}

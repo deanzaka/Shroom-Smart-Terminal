@@ -2,6 +2,7 @@ package shroom.dkib.st;
 
 import shroom.dkib.st.Main.Looper;
 import ioio.lib.api.AnalogInput;
+import ioio.lib.api.DigitalOutput;
 import ioio.lib.api.IOIO;
 import ioio.lib.api.exception.ConnectionLostException;
 import ioio.lib.util.BaseIOIOLooper;
@@ -27,14 +28,18 @@ public class Sensors extends IOIOActivity {
 	public NumberPicker pickerTemp_;
 	
 	private final Handler mHandler;
+	private final Handler timeHandler;
+	
 	SharedPreferences sharedpreferences;
 	
 	private void start() {
         mHandler.post(mRunnable);
+        timeHandler.post(timeRunnable);
     }
 	
 	public Sensors() {
         mHandler = new Handler();
+        timeHandler = new Handler();
 	}
 	
 	private final Runnable mRunnable = new Runnable() {
@@ -47,6 +52,32 @@ public class Sensors extends IOIOActivity {
             
         }
     };
+    
+    private final Runnable timeRunnable = new Runnable() {
+        public void run() {
+    		
+    		Editor editor = sharedpreferences.edit();
+    		if(!(sharedpreferences.getInt("userHourValue", 0) == 0 && sharedpreferences.getInt("userMinValue", 0) == 0 && sharedpreferences.getInt("userSecValue", 0) == 0)) {
+        		if(sharedpreferences.getBoolean("StartTimerSave", false)) {
+        			editor.putInt("userSecValue", sharedpreferences.getInt("userSecValue", 0)-1);
+	            	if(sharedpreferences.getInt("userHourValue", 0) == 0 && sharedpreferences.getInt("userMinValue", 0) == 0 && sharedpreferences.getInt("userSecValue", 0) == 0) {
+	            		editor.putBoolean("StartTimerSave", false);
+	                }
+	            	else if(sharedpreferences.getInt("userSecValue", 0) == 59) {
+	            		editor.putInt("userMinValue", sharedpreferences.getInt("userMinValue", 0)-1);
+	            		if(sharedpreferences.getInt("userMinValue", 0) == 59) {
+	            			editor.putInt("userMinValue", sharedpreferences.getInt("userMinValue", 0)-1);
+	                	}
+	            	}
+	            }
+        	}
+    		
+    		
+            editor.commit();
+            
+            mHandler.postDelayed(mRunnable, 1000);
+        }
+    };
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +86,8 @@ public class Sensors extends IOIOActivity {
 		
 		sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 		
-		luxValue_ = (TextView) findViewById(R.id.LuxValue);
-		tempValue_ = (TextView) findViewById(R.id.TempValue);
+		luxValue_ = (TextView) findViewById(R.id.luxValueSensors);
+		tempValue_ = (TextView) findViewById(R.id.tempValueSensors);
 		
 		String[] nums = new String[41];
 		for(int i=0; i<nums.length; i++)
@@ -116,11 +147,21 @@ public class Sensors extends IOIOActivity {
 	class Looper extends BaseIOIOLooper {
 		public AnalogInput lux_;
 		public AnalogInput temp_;
+		public DigitalOutput led_;
+		public DigitalOutput terminal1_;
+		public DigitalOutput terminal2_;
+		public DigitalOutput terminal3_;
+		public DigitalOutput lamp_;
 		
 		@Override
 		public void setup() throws ConnectionLostException {
 			lux_ = ioio_.openAnalogInput(40);
 			temp_ = ioio_.openAnalogInput(39);
+			led_ = ioio_.openDigitalOutput(IOIO.LED_PIN, true);
+			lamp_ = ioio_.openDigitalOutput(10, true);
+			terminal1_ = ioio_.openDigitalOutput(9, true);
+			terminal2_ = ioio_.openDigitalOutput(8, true);
+			terminal3_ = ioio_.openDigitalOutput(7, true);
 		}
 		
 		@Override
@@ -132,6 +173,14 @@ public class Sensors extends IOIOActivity {
 			float tempRead = temp_.read();
 			tempRead = tempRead * 290;
 			tempText(tempRead);
+			
+			led_.write(sharedpreferences.getBoolean("led_", true));
+			lamp_.write(sharedpreferences.getBoolean("lamp_", true));
+			terminal1_.write(sharedpreferences.getBoolean("terminal1_", true));
+			terminal2_.write(sharedpreferences.getBoolean("terminal2_", true));
+			terminal3_.write(sharedpreferences.getBoolean("terminal3_", true));
+			
+			Thread.sleep(10);
 		}
 		
 	}

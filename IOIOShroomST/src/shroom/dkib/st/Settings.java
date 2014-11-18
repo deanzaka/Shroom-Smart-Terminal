@@ -1,8 +1,17 @@
 package shroom.dkib.st;
 
+import ioio.lib.api.AnalogInput;
+import ioio.lib.api.DigitalOutput;
+import ioio.lib.api.IOIO;
+import ioio.lib.api.exception.ConnectionLostException;
+import ioio.lib.util.BaseIOIOLooper;
+import ioio.lib.util.IOIOLooper;
+import ioio.lib.util.android.IOIOActivity;
+
 import java.text.DateFormat;
 import java.util.Date;
 
+import shroom.dkib.st.Timer.Looper;
 import android.support.v7.app.ActionBarActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,7 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ToggleButton;
 
-public class Settings extends ActionBarActivity {
+public class Settings extends IOIOActivity {
 
 	public ToggleButton LightSensor1_;
 	public ToggleButton TempSensor1_;
@@ -28,8 +37,19 @@ public class Settings extends ActionBarActivity {
 	public ToggleButton TempSensor4_;
 	public ToggleButton Timer4_;
 	private final Handler mHandler;
+	private final Handler timeHandler;
 	
 	SharedPreferences sharedpreferences;
+	
+	public Settings() {
+        mHandler = new Handler();
+        timeHandler = new Handler();
+	}
+
+	private void start() {
+		mHandler.post(mRunnable);
+		timeHandler.post(timeRunnable);
+	}
 	
 	private final Runnable mRunnable = new Runnable() {
         public void run() {
@@ -50,6 +70,32 @@ public class Settings extends ActionBarActivity {
 
             editor.commit();
             
+        }
+    };
+    
+    private final Runnable timeRunnable = new Runnable() {
+        public void run() {
+    		
+    		Editor editor = sharedpreferences.edit();
+    		if(!(sharedpreferences.getInt("userHourValue", 0) == 0 && sharedpreferences.getInt("userMinValue", 0) == 0 && sharedpreferences.getInt("userSecValue", 0) == 0)) {
+        		if(sharedpreferences.getBoolean("StartTimerSave", false)) {
+        			editor.putInt("userSecValue", sharedpreferences.getInt("userSecValue", 0)-1);
+	            	if(sharedpreferences.getInt("userHourValue", 0) == 0 && sharedpreferences.getInt("userMinValue", 0) == 0 && sharedpreferences.getInt("userSecValue", 0) == 0) {
+	            		editor.putBoolean("StartTimerSave", false);
+	                }
+	            	else if(sharedpreferences.getInt("userSecValue", 0) == 59) {
+	            		editor.putInt("userMinValue", sharedpreferences.getInt("userMinValue", 0)-1);
+	            		if(sharedpreferences.getInt("userMinValue", 0) == 59) {
+	            			editor.putInt("userMinValue", sharedpreferences.getInt("userMinValue", 0)-1);
+	                	}
+	            	}
+	            }
+        	}
+    		
+    		
+            editor.commit();
+            
+            mHandler.postDelayed(mRunnable, 1000);
         }
     };
 	
@@ -87,7 +133,7 @@ public class Settings extends ActionBarActivity {
 	    if(sharedpreferences.getBoolean("Timer4Save", false) != Timer4_.isChecked()) Timer4_.performClick();
 
 		
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		start();
 	}
 	
@@ -135,11 +181,39 @@ public class Settings extends ActionBarActivity {
 
 	}
 	
-	public Settings() {
-	        mHandler = new Handler();
+	class Looper extends BaseIOIOLooper {
+		public DigitalOutput led_;
+		public DigitalOutput terminal1_;
+		public DigitalOutput terminal2_;
+		public DigitalOutput terminal3_;
+		public DigitalOutput lamp_;
+		
+		@Override
+		public void setup() throws ConnectionLostException {
+			led_ = ioio_.openDigitalOutput(IOIO.LED_PIN, true);
+			lamp_ = ioio_.openDigitalOutput(10, true);
+			terminal1_ = ioio_.openDigitalOutput(9, true);
+			terminal2_ = ioio_.openDigitalOutput(8, true);
+			terminal3_ = ioio_.openDigitalOutput(7, true);
+			
+		}
+		
+		@Override
+		public void loop() throws ConnectionLostException, InterruptedException {
+			led_.write(sharedpreferences.getBoolean("led_", true));
+			lamp_.write(sharedpreferences.getBoolean("lamp_", true));
+			terminal1_.write(sharedpreferences.getBoolean("terminal1_", true));
+			terminal2_.write(sharedpreferences.getBoolean("terminal2_", true));
+			terminal3_.write(sharedpreferences.getBoolean("terminal3_", true));
+			
+			Thread.sleep(10);
+		}
+		
 	}
 	
-	private void start() {
-        mHandler.post(mRunnable);
-    }
+	@Override
+	protected IOIOLooper createIOIOLooper() {
+		return new Looper();
+	}
+	
 }

@@ -38,7 +38,7 @@
 			/>
 
 		<TextView
-		    android:id="@+id/luxValue"
+		    android:id="@+id/luxValueSensors"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_toRightOf="@id/userLux"
@@ -84,7 +84,7 @@
 			/>
 
 		<TextView
-		    android:id="@+id/tempValue"
+		    android:id="@+id/tempValueSensors"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_toRightOf="@id/userTemp"
