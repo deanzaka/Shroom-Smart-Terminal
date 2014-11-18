@@ -234,7 +234,7 @@ public class Main extends IOIOActivity{
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				luxValue_.setText(str);
+				tempValue_.setText(str);
 			}
 		});
 	}
