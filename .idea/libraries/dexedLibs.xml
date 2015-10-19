@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="dexedLibs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/IOIOShroomST/bin/dexedLibs/appcompat_v7-fd27ae9cfd3929b980c5a63690642009.jar!/" />
+      <root url="jar://$PROJECT_DIR$/IOIOShroomST/bin/dexedLibs/ioiolibaccessory-9daf8a85cda9832c7fe31b83b1306a5a.jar!/" />
+      <root url="jar://$PROJECT_DIR$/IOIOShroomST/bin/dexedLibs/ioiolibbt-217a874e34991756ac3a59356c46e9c3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/IOIOShroomST/bin/dexedLibs/android-support-v4-9e274136e0443b14129c96de8bfe6006.jar!/" />
+      <root url="jar://$PROJECT_DIR$/IOIOShroomST/bin/dexedLibs/ioiolibandroid-647b787dea3419e9c9d5ba8e56db2b72.jar!/" />
+      <root url="jar://$PROJECT_DIR$/IOIOShroomST/bin/dexedLibs/android-support-v7-appcompat-bac3af6274db64b3cfc930579d94c5c7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
